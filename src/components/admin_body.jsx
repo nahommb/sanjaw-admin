@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Dashboard from "./dashboard";
 import Setting from "./setting";
+import { MatchDay } from "./match_day";
+import { Post } from "./post";
 
 export default function AdminBody() {
 
@@ -8,8 +10,8 @@ export default function AdminBody() {
 
     const bodyParts = [
         <Dashboard/>,
-        <p>2</p>,
-        <p>4</p>,
+        <Post/>,
+        <MatchDay/>,
         <p>5</p>,
         <Setting/>,
         <p>3</p>

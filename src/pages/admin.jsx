@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 
 export default function Admin() {
-   const user = false;
+   const user = true;
    
     if(user){
          return (
