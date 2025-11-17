@@ -12,8 +12,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
       <Router>
         <Routes>
-          <Route path="/" element={<App />} />          {/* Default route */}
-          <Route path="/admin" element={<Admin />} />     Admin route
+          {/* <Route path="/" element={<App />} />          Default route */}
+          <Route path="/" element={<Admin />} />     Admin route
           <Route path="/login" element={<Login/>} />        {/* Main app route */}
         </Routes>
       </Router>

@@ -3,6 +3,7 @@ import Dashboard from "./dashboard";
 import Setting from "./setting";
 import { MatchDay } from "./match_day";
 import { Post } from "./post";
+import { Story } from "./story";
 
 export default function AdminBody() {
 
@@ -13,6 +14,7 @@ export default function AdminBody() {
         <Post/>,
         <MatchDay/>,
         <p>5</p>,
+        <Story/>,
         <Setting/>,
         <p>3</p>
        
@@ -26,9 +28,9 @@ export default function AdminBody() {
                 <li><button onClick={()=>setIndex(1)}  className="mb-4">Post</button></li> 
                 <li><button onClick={()=>setIndex(2)}  className="mb-4">Match Day</button></li> 
                 <li><button onClick={()=>setIndex(3)}  className="mb-4">Live Stream</button></li> 
-
-                <li><button onClick={()=>setIndex(4)}  className="mb-4">Settings</button></li>
-                <li><button onClick={()=>setIndex(5)}  className="mb-4">Reports</button></li> 
+                <li><button onClick={()=>setIndex(4)}  className="mb-4">Story</button></li> 
+                <li><button onClick={()=>setIndex(5)}  className="mb-4">Settings</button></li>
+                <li><button onClick={()=>setIndex(6)}  className="mb-4">Reports</button></li> 
                 
 
             </ul>
