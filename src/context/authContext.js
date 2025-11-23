@@ -1,11 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "./helper/base_url";
+import { Navigate } from "react-router-dom";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 
-export default function AuthProvider({children}) {
+export function AuthProvider({children}) {
+
+  const navigate = Navigate();
 
 //   const [data,setData] = useState(null);
   const [loading,setLoading] = useState(false);
@@ -15,9 +18,10 @@ const handleLogin = async ({email,password})=>{
     // const localStorage = 
   try{
     setLoading(true);
-    const res = await axios.post(`${baseUrl}login`);
+    const res = await axios.post(`${baseUrl}auth/login`);
     if(res.status == 200){
      localStorage.setItem('token',res.data.token)
+     navigate('/')
     }
   }
   catch(err){

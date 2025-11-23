@@ -1,14 +1,18 @@
-
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/authContext";
 
 export default function Login() {
 
+  const {loading,error,handleLogin} = useContext(AuthContext);
 
+  const [email,setEmail] = useState();
+  const [password , setPassword] = useState();
   return (
     <div className="flex flex-col text-white items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-orange font-bold text-lg mb-4">Login</h1>
 
 
-      <form >
+      <form onSubmit={handleLogin()}>
         <div className="flex flex-col space-y-4 bg-white h-80 items-center justify-center w-80 sm:w-96 rounded-lg p-4 shadow-lg shadow-gray-400">
           <input
             required
