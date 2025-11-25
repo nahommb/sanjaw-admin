@@ -3,7 +3,7 @@ export default function ErrorPopCard({ message }) {
     <div
       className="relative w-full max-w-64 flex flex-wrap items-center justify-center py-3 pl-4 pr-14 rounded-lg text-base font-medium transition-all duration-500 border border-[#f85149] text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]"
     >
-      <button
+      {/* <button
         type="button"
         aria-label="close-error"
         className="absolute right-4 p-1 rounded-md transition-opacity text-[#f85149] border border-[#f85149] opacity-40 hover:opacity-100"
@@ -23,7 +23,7 @@ export default function ErrorPopCard({ message }) {
           <path d="M18 6 6 18"></path>
           <path d="m6 6 12 12"></path>
         </svg>
-      </button>
+      </button> */}
 
       <p className="flex flex-row items-center mr-auto gap-x-2">
         <svg

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "./helper/base_url";
 import { useNavigate } from "react-router-dom";
@@ -6,43 +6,88 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [loading, setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false);        // login loading
+  const [loadingUser, setLoadingUser] = useState(true); // token check loading
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
-  const navigate = useNavigate();  // ✅ correct
+  const navigate = useNavigate();
 
-const handleLogin = async (email, password) => {
-  try {
-    setLoading(true);
-    setError(null);
+  // ✅ Check Token Once When App Loads
+  const checkToken = async () => {
+    setLoadingUser(true);
+    const token = localStorage.getItem("token");
 
-    const res =  await axios.post(
-      `${baseUrl}auth/login`,
-      { email, password },
-      {
-        headers: { 'Content-Type': 'application/json' },
-         withCredentials: true,
-      }
-    );
+    if (!token) {
+      setLoadingUser(false);
+      return;
+    }
 
-    if (res.status === 200) {
+    try {
+      const res = await axios.get(`${baseUrl}auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+
+      setUser(res.data.user);
+    } catch (err) {
+      localStorage.removeItem("token");
+      console.error("Token invalid:", err);
+    }
+
+    setLoadingUser(false);   
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+
+  // ✅ Login Function
+  const handleLogin = async (email, password) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await axios.post(
+        `${baseUrl}auth/login`,
+        { email, password },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
       localStorage.setItem("token", res.data.token);
       setUser(res.data.user);
-      navigate("/"); 
-    }
-    setError(res.data.message);
-  } catch (err) {
-    console.error(err); // add this for more info
-    setError("Failed to login");
-  } finally {
-    setLoading(false);
-  }
-};
+      navigate("/");
 
+    } catch (err) {
+      console.error(err);
+
+      if (err.response && err.response.status === 401) {
+        setError("Invalid email or password.");
+      } else {
+        setError("Login failed. Try again.");
+      }
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user,loading, error, handleLogin }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,       // login loading
+        loadingUser,   // token check loading
+        error,
+        handleLogin,
+        checkToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

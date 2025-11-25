@@ -1,13 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import { AuthContext } from "../context/authContext.jsx";
 import ErrorPopCard from "../components/error_pop_card.jsx";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function Login() {
 
-  const {loading,error,handleLogin} = useContext(AuthContext);
+ const navigate = useNavigate(); 
+
+  const {loading,error,handleLogin,checkToken} = useContext(AuthContext);
 
   const [email,setEmail] = useState();
   const [password , setPassword] = useState();
+
+   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      checkToken().then(() => {
+        navigate("/");
+      }); 
+    }
+  },
+   [navigate]);
 
   return (
     <div className="flex flex-col text-white items-center justify-center min-h-screen bg-gray-100">
@@ -41,7 +56,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="bg-red-500 w-40 p-2 rounded-lg flex justify-center items-center hover:bg-green-500 disabled:opacity-50"
+            className="bg-orange-500 w-40 p-2 rounded-lg flex justify-center items-center hover:bg-green-500 disabled:opacity-50"
           >
           {loading&&<p>Loading</p>} Login
           </button>
