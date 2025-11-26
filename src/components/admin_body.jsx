@@ -20,7 +20,7 @@ export default function AdminBody() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
 
       {/* Sidebar */}
       <div className="
@@ -28,7 +28,7 @@ export default function AdminBody() {
         flex-row md:flex-col 
         gap-4 
         w-full md:w-64 
-        md:h-screen 
+        
         bg-white text-orange
         p-4 mt-16 pt-16 
         rounded-lg shadow-lg shadow-gray-400
@@ -89,7 +89,7 @@ export default function AdminBody() {
       </div>
 
       {/* Main Content */}
-      <div className="bg-white m-4 mt-20 rounded-lg w-full p-8 shadow-lg shadow-gray-400">
+      <div className="bg-white m-4 mt-20 rounded-lg w-full p-8 shadow-lg shadow-gray-400 overflow-y-scroll no-scrollbar">
         {bodyParts[index]}
       </div>
 
