@@ -1,10 +1,10 @@
-import { Button } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 import { useState, useContext } from "react";
 import { DataContext } from "../context/data_context.jsx";
 import { AuthContext } from "../context/authContext.jsx";
 
 export function Post() {
-  const posts = [1, 2, 3, 4, 5];
+  // const posts = [1, 2, 3, 4, 5];
 
   const [files, setFiles] = useState([]);
   const [previewURLs, setPreviewURLs] = useState([]);
@@ -13,10 +13,11 @@ export function Post() {
   const [content, setContent] = useState("");
 
   const { user } = useContext(AuthContext);
-  const { createPost, loading, error } = useContext(DataContext);
+  const { createPost, posts,loading, error } = useContext(DataContext);
 
   // Handle multiple file selection
   function handleFileUpload(e) {
+
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
 
@@ -40,7 +41,9 @@ export function Post() {
 
     createPost(formData);
   }
-
+function onPageChange(event){
+  console.log('awojdioawjdio');
+}
   return (
     <>
       <div className="p-4 bg-white rounded-lg shadow-md">
@@ -110,20 +113,27 @@ export function Post() {
             className="border rounded-lg px-3 py-2 w-full"
           />
 
-          <div className="sm:col-span-2 flex justify-start">
+          <div className="sm:col-span-2 flex justify-start mb-8">
             <Button type="submit" variant="contained" color="primary">
               {loading ? "Posting..." : "Post"}
             </Button>
           </div>
         </form>
-        <div className="space-y-3"> {posts.map((post, index) => 
+        <p className="mb-8">All Posts</p>
+        <div className="space-y-3"> {
+        loading ? ( <p>Loading posts...</p> ) : error ? ( <p className="text-red-500"> {error} </p> ) : (
+        posts.map((post, index) => 
           ( <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between border p-3 rounded-md bg-gray-50 shadow-sm" > 
-          <p className="font-medium text-gray-800"> Post {post} — Lorem ipsum title </p>
+          <div>
+            <p className="font-medium text-gray-800"> {post.title}</p>
+            <div className="text-sm text-gray-600"> {post.content}</div>
+          </div>   
            <div className="mt-2 sm:mt-0 flex gap-2">
              <Button variant="outlined">Edit</Button> 
              <Button variant="contained" color="error"> Delete </Button> 
              </div> 
-             </div> ))}
+             </div> )))}
+             <Pagination count={10} color="primary" onPageChange = {onPageChange}/>
               </div>
       </div>
     </>
