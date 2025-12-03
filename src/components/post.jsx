@@ -13,7 +13,7 @@ export function Post() {
   const [content, setContent] = useState("");
 
   const { user } = useContext(AuthContext);
-  const { createPost, posts,loading, error } = useContext(DataContext);
+  const { createPost,getPosts, posts,loading, error } = useContext(DataContext);
 
   // Handle multiple file selection
   function handleFileUpload(e) {
@@ -41,8 +41,9 @@ export function Post() {
 
     createPost(formData);
   }
-function onPageChange(event){
-  console.log('awojdioawjdio');
+function onPageChange(event,value){
+  console.log(value);
+  getPosts(value);
 }
   return (
     <>
@@ -133,7 +134,7 @@ function onPageChange(event){
              <Button variant="contained" color="error"> Delete </Button> 
              </div> 
              </div> )))}
-             <Pagination count={10} color="primary" onPageChange = {onPageChange}/>
+             <Pagination count={10} color="primary" onChange = {onPageChange} />
               </div>
       </div>
     </>

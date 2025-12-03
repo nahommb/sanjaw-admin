@@ -29,17 +29,15 @@ export function DataProvider({ children }) {
     }
   }
 
-  const getPosts = async()=>{
+  const getPosts = async(page)=>{
     try{
       setLoading(true);
       setError(null);
-      const res = await axios.get(`${baseUrl}posts/allposts?page=1&limt=6`, {
+      const res = await axios.get(`${baseUrl}posts/allposts?page=${page}&limt=6`, {
         withCredentials: true,
       });
       if(res.status === 200){
         setPosts(res.data);
-        console.log(res.data);
-        console.log(posts)
       }
     }
     catch(err){
@@ -52,7 +50,6 @@ export function DataProvider({ children }) {
 
   useEffect(()=>{
     getPosts();
-    console.log(posts)
   },[]);
 
   return (
