@@ -2,6 +2,7 @@ import { Button, Pagination } from "@mui/material";
 import { useState, useContext } from "react";
 import { DataContext } from "../context/data_context.jsx";
 import { AuthContext } from "../context/authContext.jsx";
+import ConfirmDelete from "./confirm_delete.jsx";
 
 export function Post() {
   // const posts = [1, 2, 3, 4, 5];
@@ -11,9 +12,10 @@ export function Post() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
-  const { createPost,getPosts, posts,loading, error } = useContext(DataContext);
+  const { createPost,getPosts,deletePost, posts,loading, error } = useContext(DataContext);
 
   // Handle multiple file selection
   function handleFileUpload(e) {
@@ -131,9 +133,25 @@ function onPageChange(event,value){
           </div>   
            <div className="mt-2 sm:mt-0 flex gap-2">
              <Button variant="outlined">Edit</Button> 
-             <Button variant="contained" color="error"> Delete </Button> 
+             <Button onClick={
+                ()=>setConfirmOpen(true)
+             } variant="contained" color="error"> Delete </Button> 
              </div> 
-             </div> )))}
+                {
+              confirmOpen && (
+                <ConfirmDelete 
+                  open={confirmOpen}
+                  onClose ={()=> setConfirmOpen(false)}
+                  onConfirm ={()=>{
+                    deletePost(post.id);
+                    setConfirmOpen (false);
+                  }}
+                />
+              )
+            }
+             </div> 
+            )))}
+         
              <Pagination count={10} color="primary" onChange = {onPageChange} />
               </div>
       </div>

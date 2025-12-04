@@ -48,12 +48,34 @@ export function DataProvider({ children }) {
     }
   }
 
+  const deletePost = async(postId)=>{
+
+    console.log("Deleting post:", postId);
+    try{
+      setLoading(true);
+      setError(null);
+      const res = await axios.delete(`${baseUrl}posts/deletepost/${postId}`, {
+        withCredentials: true,
+      });
+      if(res.status === 200){
+        setPosts(posts.filter((post)=>post.id !== postId));
+      }
+    }
+    catch(err){
+      setError("Failed to delete post");
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+
   useEffect(()=>{
     getPosts();
+    console.log(posts)
   },[]);
 
   return (
-    <DataContext.Provider value={{createPost, getPosts,posts,loading, error}}>
+    <DataContext.Provider value={{createPost, getPosts,deletePost,posts,loading, error}}>
       {children}
     </DataContext.Provider>
   );
