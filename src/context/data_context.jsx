@@ -26,6 +26,7 @@ export function DataProvider({ children }) {
       setError("Failed to create post");
     } finally {
       setLoading(false);
+      getPosts();
     }
   }
 
@@ -69,13 +70,33 @@ export function DataProvider({ children }) {
     }
   }
 
+  const editPost = async(postId,updatedContent)=>{
+    try{
+      setLoading(true);
+      setError(null);
+      const res = await axios.put(`${baseUrl}posts/editpost/${postId}`,
+        {content:updatedContent}, {
+        withCredentials: true,
+      });
+      if(res.status === 200){
+        setPosts(posts.map((post)=>post.id === postId ? {...post, content: updatedContent} : post));
+      }
+    }
+    catch(err){
+      setError("Failed to edit post");
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+
   useEffect(()=>{
     getPosts();
     console.log(posts)
   },[]);
 
   return (
-    <DataContext.Provider value={{createPost, getPosts,deletePost,posts,loading, error}}>
+    <DataContext.Provider value={{createPost, getPosts,editPost,deletePost,posts,loading, error}}>
       {children}
     </DataContext.Provider>
   );

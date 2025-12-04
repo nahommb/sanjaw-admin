@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { DataContext } from "../context/data_context.jsx";
 import { AuthContext } from "../context/authContext.jsx";
 import ConfirmDelete from "./confirm_delete.jsx";
+import EditPopCard from "./edit_pop_card.jsx";
 
 export function Post() {
   // const posts = [1, 2, 3, 4, 5];
@@ -13,9 +14,10 @@ export function Post() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
-  const { createPost,getPosts,deletePost, posts,loading, error } = useContext(DataContext);
+  const { createPost,getPosts,editPost,deletePost, posts,loading, error } = useContext(DataContext);
 
   // Handle multiple file selection
   function handleFileUpload(e) {
@@ -132,11 +134,28 @@ function onPageChange(event,value){
             <div className="text-sm text-gray-600"> {post.content}</div>
           </div>   
            <div className="mt-2 sm:mt-0 flex gap-2">
-             <Button variant="outlined">Edit</Button> 
+             <Button onClick={
+              ()=> setEditOpen(true)
+             }
+              variant="outlined">Edit</Button> 
              <Button onClick={
                 ()=>setConfirmOpen(true)
              } variant="contained" color="error"> Delete </Button> 
              </div> 
+               {
+              editOpen && (
+                <EditPopCard 
+                  content={post.content} 
+                  postId={post.id}
+                  open={editOpen}
+                  onClose ={()=> setEditOpen(false)}
+                  onConfirm ={()=>{
+                    // editPost(post.id);
+                    setEditOpen (false);
+                  }}
+                />
+              )
+               }
                 {
               confirmOpen && (
                 <ConfirmDelete 
