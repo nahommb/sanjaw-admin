@@ -17,16 +17,18 @@ export function DataProvider({ children }) {
 
       setLoading(true);
       setError(null);
-     await axios.post(`${baseUrl}posts/createpost`, postData, {
+     const res = await axios.post(`${baseUrl}posts/createpost`, postData, {
         // headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-
+      getPosts();
+      
     } catch (err) {
       setError("Failed to create post");
+      console.log('eerrr')
     } finally {
       setLoading(false);
-      getPosts();
+      //
     }
   }
 
@@ -74,7 +76,7 @@ export function DataProvider({ children }) {
     try{
       setLoading(true);
       setError(null);
-      const res = await axios.put(`${baseUrl}posts/editpost/${postId}`,
+      const res = await axios.patch(`${baseUrl}posts/editpost/${postId}`,
         {content:updatedContent}, {
         withCredentials: true,
       });

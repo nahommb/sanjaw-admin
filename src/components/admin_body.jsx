@@ -5,6 +5,7 @@ import { MatchDay } from "./match_day";
 import { Post } from "./post";
 import { Story } from "./story";
 import { FaHome, FaNewspaper, FaCalendar, FaVideo, FaImages, FaCog, FaChartBar } from "react-icons/fa";
+import LiveStream from "./live_stream";
 
 export default function AdminBody() {
   const [index, setIndex] = useState(0);
@@ -13,7 +14,7 @@ export default function AdminBody() {
     <Dashboard />,
     <Post />,
     <MatchDay />,
-    <p>Live Stream</p>,
+    <LiveStream/>,
     <Story />,
     <Setting />,
     <p>Reports</p>,

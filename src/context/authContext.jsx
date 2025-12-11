@@ -11,6 +11,7 @@ export function AuthProvider({ children }) {
   const [loadingUser, setLoadingUser] = useState(true); // token check loading
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [status,setStatus] = useState(null); 
 
   const navigate = useNavigate();
 
@@ -77,6 +78,30 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const changePassword = async (id,oldPassword,newPassword)=>{
+     
+    try{
+      const res = await axios.patch(`${baseUrl}/changepassword/${id}`,{
+        'oldPassword':oldPassword,
+        'newPassword':newPassword
+      },
+      {
+        withCredentials :true
+      }
+      
+    )
+       if(res.status == 200){
+        setStatus('successfuly changed')
+       }
+    }
+    catch(err){
+      setError(err)
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -86,6 +111,7 @@ export function AuthProvider({ children }) {
         error,
         handleLogin,
         checkToken,
+        changePassword,
       }}
     >
       {children}

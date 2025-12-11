@@ -1,0 +1,56 @@
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
+import { baseUrl } from "./helper/base_url";
+
+export const LiveStreamContext = createContext();
+
+export function LiveStreamProvider ({children}){
+
+   const [loading,setLoading] = useState(false);
+   const [error,setError] = useState(null);
+   const [liveEvent,setLiveEvent] = useState([]);
+
+
+const getLiveEvent = async()=>{
+  try{
+    setLoading(true)
+    setError(null);
+    const res = await axios.get(`${baseUrl}livestream/getlivematch`)
+    console.log(res.data)
+    if(res.status === 200){
+        setLiveEvent(res.data)
+
+    }
+  }
+  catch(err){
+    setError(err)
+  }
+  finally{
+    setLoading(false)
+  }
+}
+const streamMatch = async(match_id,event_type,team_type,team_name)=>{
+
+  try{
+        setLoading(true)
+        setError(null)
+     const res = await axios.post(`${baseUrl}`,{
+        match_id,
+        event_type,
+        team_type,
+        team_name
+     })
+    }
+    catch(err){
+
+    }
+    finally{
+        setLoading(false)
+    }
+}
+
+
+    return <LiveStreamContext.Provider value = {{loading,error,liveEvent,getLiveEvent}}>
+        {children}
+    </LiveStreamContext.Provider>
+}
