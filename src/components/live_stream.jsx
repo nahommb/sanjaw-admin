@@ -1,11 +1,11 @@
 import { useContext ,useEffect, useState} from "react"
 import { LiveStreamContext } from "../context/live_stream_context"
-import { Button, Select } from "@mui/material";
+import { Button,} from "@mui/material";
 
 export default function LiveStream (){
 
 
-  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch} = useContext(LiveStreamContext);
+  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore} = useContext(LiveStreamContext);
 
   const [eventType,setEventType] = useState();
   const [teamType,setTeamType] = useState();
@@ -73,9 +73,20 @@ export default function LiveStream (){
       </form>
       <div>
         <p className = 'my-2'>Score</p>
-        <form className="flex flex-coloumn justify-between my-5">
-          <input type="text" placeholder="Home-Score" className="p-2 h-10 border rounded-lg"/>
-          <input type="text" placeholder="Away-Score" className="p-2 h-10 border rounded-lg"/>
+        <form 
+         onSubmit={(e)=>{
+            e.preventDefault()
+            updateScore(
+                {
+                    match_id:liveEvent[0].id,
+                    home_score:homeScore,
+                    away_score:awayScore
+                }
+            )
+         }}
+        className="flex flex-coloumn justify-between my-5">
+          <input type="text" placeholder="Home-Score" onChange={(e)=>setHomeScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
+          <input type="text" placeholder="Away-Score" onChange={(e)=>setAwayScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
           <Button type="submit">Send Score</Button>
         </form>
       </div>
