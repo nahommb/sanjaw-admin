@@ -17,7 +17,7 @@ export function StoryProvider({children}){
 
         setLoading(true)
         setError(null)
-        const res = await axios.post(`${baseUrl}/createstory`,formData);
+        const res = await axios.post(`${baseUrl}createstory`,formData);
        
       }
       catch(err){
@@ -33,7 +33,7 @@ export function StoryProvider({children}){
     try{
     setLoading(true)
     setError(null)
-     const res = await axios.get(`${baseUrl}/getstory`)
+     const res = await axios.get(`${baseUrl}getstory`)
       if(res.status === 200){
             setStory(res.data);
         }
@@ -51,7 +51,7 @@ export function StoryProvider({children}){
       try{
         setLoading(true)
         setError(null)
-        const res = await axios.delete(`${baseUrl}/deletestory/${id}`)
+        const res = await axios.delete(`${baseUrl}deletestory/${id}`)
       }
       catch(err){
         setError(err)
