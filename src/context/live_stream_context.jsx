@@ -102,7 +102,29 @@ const createLiveMatch = async({home_team,away_team,live_id})=>{
       }
   }
 
-    return <LiveStreamContext.Provider value = {{loading,error,liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore}}>
+  const sendNotification = async({title,body})=>{
+    try{
+          setLoading(true)
+          setError(null)
+       const res = await axios.post(`${baseUrl}livestream/notify`,{
+          title,
+          body
+       },
+        {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+      )
+      }
+      catch(err){
+          setError(err)
+      }
+      finally{
+          setLoading(false)
+      }
+  }
+
+    return <LiveStreamContext.Provider value = {{loading,error,liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore,sendNotification}}>
         {children}
     </LiveStreamContext.Provider>
 }
