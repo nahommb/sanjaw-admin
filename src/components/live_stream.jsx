@@ -5,7 +5,7 @@ import { Button,} from "@mui/material";
 export default function LiveStream (){
 
 
-  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore} = useContext(LiveStreamContext);
+  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore,loading,error} = useContext(LiveStreamContext);
 
   const [eventType,setEventType] = useState();
   const [teamType,setTeamType] = useState();
@@ -45,7 +45,7 @@ export default function LiveStream (){
             <input type="text" placeholder="Home Team" onChange={((e)=>setHomeTeam(e.target.value))} className="p-2 border rounded-lg"/>
             <input type="text" placeholder="Away Team" onChange ={((e)=>setAwayTeam(e.target.value))} className="p-2 border rounded-lg"/>
             <input type="text" placeholder="Live Id" onChange ={((e)=>setLiveId(e.target.value))} className="p-2 border rounded-lg"/>
-            <Button type="submit">Create</Button>
+            <Button type="submit">{loading ? "creating..." : "Create"}</Button>
         </form>
       </div>
       <p>Stream Match</p>
@@ -60,16 +60,16 @@ export default function LiveStream (){
         )
       }}
       className="flex flex-coloumn justify-between my-5">
-        <input type="text" placeholder="Event" onChange={(e)=>setEventType(e.target.value)} className="p-2 h-10 border rounded-lg"/>
+        <input required type="text" placeholder="Event" onChange={(e)=>setEventType(e.target.value)} className="p-2 h-10 border rounded-lg"/>
         <div>
             <p className="mb-2" >Team Type</p>
-            <select value={teamType} onChange={(e)=>setTeamType(e.target.value)} className="p-2 border rounded-lg" >
+            <select required value={teamType} onChange={(e)=>setTeamType(e.target.value)} className="p-2 border rounded-lg" >
            <option value= 'home'>Home</option>
            <option value= 'away'>Away</option>
         </select>
         </div>
         <input type="text" placeholder="Team Name" onChange={(e)=>setTeamName(e.target.value)} className="p-2 h-10 border rounded-lg"/>
-        <Button type="submit">Stream</Button>
+        <Button type="submit">{loading ? "streaming..." : "Stream"}</Button>
       </form>
       <div>
         <p className = 'my-2'>Score</p>
@@ -85,10 +85,11 @@ export default function LiveStream (){
             )
          }}
         className="flex flex-coloumn justify-between my-5">
-          <input type="text" placeholder="Home-Score" onChange={(e)=>setHomeScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
-          <input type="text" placeholder="Away-Score" onChange={(e)=>setAwayScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
-          <Button type="submit">Send Score</Button>
+          <input required type="text" placeholder="Home-Score" onChange={(e)=>setHomeScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
+          <input required type="text" placeholder="Away-Score" onChange={(e)=>setAwayScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
+          <Button type="submit">{loading ? "updating..." : "Send Score"}</Button>
         </form>
+        {error && <p className="text-red-500">{'Error occured try again'}</p>}
       </div>
     </div>
 }
