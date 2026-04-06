@@ -60,6 +60,7 @@ function onPageChange(event,value){
 
           {/* Textarea */}
           <textarea
+            required
             onChange={(e) => setContent(e.target.value)}
             placeholder="Write your post..."
             className="border rounded-lg p-2 h-24 sm:col-span-2"

@@ -5,11 +5,12 @@ import { Button,} from "@mui/material";
 export default function LiveStream (){
 
 
-  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore,loading,error,sendNotification} = useContext(LiveStreamContext);
+  const {liveEvent,getLiveEvent,streamMatch,createLiveMatch,updateScore,loading,error,sendNotification,endMatch} = useContext(LiveStreamContext);
 
   const [eventType,setEventType] = useState();
   const [teamType,setTeamType] = useState('home');
   const [teamName,setTeamName] = useState();
+  
 
   const [homeTeam,setHomeTeam] = useState();
   const [awayTeam,setAwayTeam] = useState();
@@ -28,13 +29,28 @@ export default function LiveStream (){
     return <div>
       <p className="text-orange-500 text-lg">live matches</p>
       <div className="mb-10">
-        {liveEvent.map((match,index)=>{
-            return <div key={index}>
+        {
+          // loading?<p>loading</p>:<p>{liveEvent[0].home_team}</p>
+          // console.log(liveEvent[0])
+        }
+     {liveEvent && liveEvent.length > 0 ? (
+          liveEvent.map((match, index) => {
+            return (
+              <div key={index}>
                 <p>{match.home_team} vs {match.away_team}</p>
-                
-            </div>
-        })}
-      </div>
+                <button
+                  onClick={() => endMatch(match.id)}
+                  className="bg-red-500 rounded text-white py-0.5 px-2 hover:bg-red-600"
+                >
+                  Finished
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <p>No live matches available</p>
+        )}
+          </div>
       <p>create live match</p>
       <div className="my-5">
         <form onSubmit={
@@ -57,8 +73,13 @@ export default function LiveStream (){
         e.preventDefault()
         streamMatch(
             {
-            match_id:liveEvent[0].id,event_type:eventType,
-            team_type:teamType,team_name:teamName}
+            match_id:liveEvent[liveEvent.length - 1].id,
+            event_type:eventType,
+            team_type:teamType,
+            team_name:teamName,
+            home_score:homeScore,
+            away_score:awayScore
+          }
         )
       }}
       className="flex flex-coloumn justify-between my-5">
@@ -69,11 +90,13 @@ export default function LiveStream (){
            <option value= 'home'>Home</option>
            <option value= 'away'>Away</option>
         </select>
+         <input required type="text" placeholder="Home-Score" onChange={(e)=>setHomeScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
+          <input required type="text" placeholder="Away-Score" onChange={(e)=>setAwayScore(e.target.value)} className="p-2 h-10 border rounded-lg"/>
         </div>
         <input type="text" placeholder="Team Name" onChange={(e)=>setTeamName(e.target.value)} className="p-2 h-10 border rounded-lg"/>
         <Button type="submit">{loading ? "streaming..." : "Stream"}</Button>
       </form>
-      <div>
+      {/* <div>
         <p className = 'my-2'>Score</p>
         <form 
          onSubmit={(e)=>{
@@ -92,7 +115,7 @@ export default function LiveStream (){
           <Button type="submit">{loading ? "updating..." : "Send Score"}</Button>
         </form>
         {error && <p className="text-red-500">{'Error occured try again'}</p>}
-      </div>
+      </div> */}
       <div>
         <p>Send Notfication</p>
         <form

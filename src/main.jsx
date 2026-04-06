@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DataProvider } from "./context/data_context.jsx";
 import { StoryProvider } from "./context/storyContext.jsx";
 import { LiveStreamProvider } from "./context/live_stream_context.jsx";
+import { MatchDayProvider } from "./context/match_dayContext.jsx";
 
 // Wrap everything in DataProvider and Router
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -19,11 +20,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <StoryProvider>
         <DataProvider>
         <LiveStreamProvider>
+        <MatchDayProvider>
         <Routes>
           {/* <Route path="/" element={<App />} />          Default route */}
           <Route path="/" element={<Admin />} />     Admin route
           <Route path="/login" element={<Login/>} />        {/* Main app route */}
         </Routes>
+        </MatchDayProvider>
         </LiveStreamProvider>
          </DataProvider>
          </StoryProvider>

@@ -12,12 +12,12 @@ export function StoryProvider({children}){
     const [story,setStory] = useState([])
 
    const createStory = async ({formData})=>{
-      
+      console.log(formData)
       try{
 
         setLoading(true)
         setError(null)
-        const res = await axios.post(`${baseUrl}createstory`,formData);
+        const res = await axios.post(`${baseUrl}stories/createstory`,formData);
        
       }
       catch(err){
@@ -33,8 +33,9 @@ export function StoryProvider({children}){
     try{
     setLoading(true)
     setError(null)
-     const res = await axios.get(`${baseUrl}getstory`)
+     const res = await axios.get(`${baseUrl}stories/getstory`)
       if(res.status === 200){
+          console.log(res.data)
             setStory(res.data);
         }
     }
@@ -51,18 +52,18 @@ export function StoryProvider({children}){
       try{
         setLoading(true)
         setError(null)
-        const res = await axios.delete(`${baseUrl}deletestory/${id}`)
+        const res = await axios.delete(`${baseUrl}stories/deletestory/${id}`)
       }
       catch(err){
         setError(err)
       }
       finally{
-        setLoading(fasle)
+        setLoading(false)
       }
    }
 
 
-    return <StoryContext.Provider value = {{loading,error,createStory,getStory,deleteStory}}>
+    return <StoryContext.Provider value = {{loading,error,story,createStory,getStory,deleteStory}}>
         {children}
     </StoryContext.Provider>
 }
