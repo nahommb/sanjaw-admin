@@ -1,7 +1,7 @@
 export default function ErrorPopCard({ message }) {
   return (
     <div
-      className="relative w-full max-w-64 flex flex-wrap items-center justify-center py-3 pl-4 pr-14 rounded-lg text-base font-medium transition-all duration-500 border border-[#f85149] text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]"
+      className="relative w-full flex flex-wrap items-center justify-center py-4 px-6 rounded-2xl text-base font-medium transition-all duration-500 border border-red-500/20 text-red-400 bg-red-500/5 backdrop-blur-md shadow-lg shadow-red-500/10"
     >
       {/* <button
         type="button"

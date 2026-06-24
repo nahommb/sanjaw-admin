@@ -1,8 +1,9 @@
-import { useContext, useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/authContext.jsx";
 import ErrorPopCard from "../components/error_pop_card.jsx";
 import { useNavigate } from "react-router-dom";
-
+import { FiMail, FiLock, FiLogIn } from "react-icons/fi";
+import sanjaw_logo from '../assets/sanjaw_logo.png'
 
 
 export default function Login() {
@@ -25,43 +26,87 @@ export default function Login() {
    [navigate]);
 
   return (
-    <div className="flex flex-col text-white items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-orange-500 font-bold text-lg mb-4">Login</h1>
+    <div className="flex items-center justify-center min-h-screen bg-[#0f172a] relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-500/20 rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-600/20 rounded-full blur-[120px]"></div>
 
+      <div className="relative z-10 w-full max-w-md px-6">
+        <form 
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin(email, password);
+          }}
+          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-black/50"
+        >
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl  text-white mb-4">
+              <img src={sanjaw_logo} alt="" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
+            <p className="text-gray-400">Please enter your details to sign in</p>
+          </div>
 
-      <form onSubmit={
-        (e)=>{
-          e.preventDefault();
-          handleLogin(email,password);
-        }
-        
-        }>
+          {error && (
+            <div className="mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+              <ErrorPopCard message={error} />
+            </div>
+          )}
 
-        <div className="flex flex-col space-y-4 bg-white h-80 items-center justify-center w-80 sm:w-96 rounded-lg p-4 shadow-lg shadow-gray-400">
-          {error && <ErrorPopCard message={error} />}
-          <input
-            required
-            type="email"
-            placeholder="email"
-            onChange={(e)=>setEmail(e.target.value)}
-            className="p-1 pl-2 rounded-lg border border-gray-500 text-orange-500 w-64"
-          />
-          <input
-            required
-            type="password"
-            onChange={(e)=>setPassword(e.target.value)}
-            placeholder="password"
-            className="p-1 pl-2 rounded-lg border border-gray-500 text-orange-500 w-64"
-          />
+          <div className="space-y-6">
+            {/* Email Input */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300 ml-1">Email Address</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-500 transition-colors">
+                  <FiMail size={18} />
+                </div>
+                <input
+                  required
+                  type="email"
+                  placeholder="name@company.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
+                />
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            className="bg-orange-500 w-40 p-2 rounded-lg flex justify-center items-center hover:bg-green-500 disabled:opacity-50"
-          >
-          {loading&&<p>Loading</p>} Login
-          </button>
-        </div>
-      </form>
+            {/* Password Input */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300 ml-1">Password</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-500 transition-colors">
+                  <FiLock size={18} />
+                </div>
+                <input
+                  required
+                  type="password"
+                  placeholder="••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transform transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 group"
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <FiLogIn className="group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

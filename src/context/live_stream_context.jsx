@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { baseUrl } from "./helper/base_url";
+import api from "./helper/apiInstance";
 
 export const LiveStreamContext = createContext();
 
@@ -15,7 +16,7 @@ const getLiveEvent = async()=>{
   try{
     setLoading(true)
     setError(null);
-    const res = await axios.get(`${baseUrl}livestream/getlivematch`)
+    const res = await api.get(`${baseUrl}livestream/getlivematch`)
     // console.log(res.data)
     // if(res.status === 200){
         setLiveEvent(res.data)
@@ -34,7 +35,7 @@ const streamMatch = async({match_id,event_type,team_type,team_name,home_score,aw
   try{
         setLoading(true)
         setError(null)
-     const res = await axios.post(`${baseUrl}livestream/sendevent`,{
+     const res = await api.post(`${baseUrl}livestream/sendevent`,{
         match_id,
         event_type,
         team_type,
@@ -61,7 +62,7 @@ const createLiveMatch = async({home_team,away_team,live_id})=>{
     try{
           setLoading(true)
           setError(null)
-       const res = await axios.post(`${baseUrl}livestream/createlivematch`,{
+       const res = await api.post(`${baseUrl}livestream/createlivematch`,{
           home_team,
           away_team,
           live_id
@@ -85,7 +86,7 @@ const createLiveMatch = async({home_team,away_team,live_id})=>{
     try{
           setLoading(true)
           setError(null)
-       const res = await axios.post(`${baseUrl}livestream/updatescore`,{
+       const res = await api.post(`${baseUrl}livestream/updatescore`,{
           match_id,
           home_score,
           away_score
@@ -108,7 +109,7 @@ const createLiveMatch = async({home_team,away_team,live_id})=>{
     try{
           setLoading(true)
           setError(null)
-       const res = await axios.post(`${baseUrl}livestream/notify`,{
+       const res = await api.post(`${baseUrl}livestream/notify`,{
           title,
           body
        },
@@ -130,7 +131,7 @@ const createLiveMatch = async({home_team,away_team,live_id})=>{
     try{
           setLoading(true)
           setError(null)
-       const res = await axios.patch(`${baseUrl}livestream/endmatch/${id}`,
+       const res = await api.patch(`${baseUrl}livestream/endmatch/${id}`,
         {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,

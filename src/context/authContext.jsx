@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "./helper/base_url";
 import { useNavigate } from "react-router-dom";
+import api from "./helper/apiInstance";
 
 export const AuthContext = createContext();
 
@@ -26,7 +27,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const res = await axios.get(`${baseUrl}auth/me`, {
+      const res = await api.get(`${baseUrl}auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
@@ -51,7 +52,7 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setError(null);
 
-      const res = await axios.post(
+      const res = await api.post(
         `${baseUrl}auth/login`,
         { email, password },
         {
@@ -78,10 +79,17 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // ✅ Logout Function
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  };
+
   const changePassword = async (id,oldPassword,newPassword)=>{
      
     try{
-      const res = await axios.patch(`${baseUrl}/changepassword/${id}`,{
+      const res = await api.patch(`${baseUrl}/changepassword/${id}`,{
         'oldPassword':oldPassword,
         'newPassword':newPassword
       },
@@ -110,6 +118,7 @@ export function AuthProvider({ children }) {
         loadingUser,   // token check loading
         error,
         handleLogin,
+        handleLogout,
         checkToken,
         changePassword,
       }}

@@ -9,13 +9,13 @@ export default function EditPopCard({postId,content, open, onClose, onConfirm })
   const {editPost} = useContext(DataContext);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-[#1e293b] bg-opacity-50 flex items-center justify-center z-50">
 
-      <div className="bg-white w-80 p-6 rounded-xl shadow-lg text-center">
+      <div className="bg-[#1e293b] w-full p-6 rounded-xl shadow-lg text-center">
         <h2 className="text-lg font-semibold mb-4">
           {}
         </h2>
-        <textarea value={editedContent} onChange={(e)=>setEditedContent(e.target.value)} className="p-4 border rounded-lg border-orange-500" />
+        <textarea value={editedContent} onChange={(e)=>setEditedContent(e.target.value)} className="w-full h-64 border p-4 rounded-lg border-orange-500 bg-black/60" />
 
         <div className="flex justify-between mt-4">
           <button

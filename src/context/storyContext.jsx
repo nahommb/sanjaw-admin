@@ -2,6 +2,7 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import { baseUrl } from "./helper/base_url";
+import api from "./helper/apiInstance";
 
 export const StoryContext = createContext();
 
@@ -17,7 +18,7 @@ export function StoryProvider({children}){
 
         setLoading(true)
         setError(null)
-        const res = await axios.post(`${baseUrl}stories/createstory`,formData);
+        const res = await api.post(`${baseUrl}stories/createstory`,formData);
        
       }
       catch(err){
@@ -33,7 +34,7 @@ export function StoryProvider({children}){
     try{
     setLoading(true)
     setError(null)
-     const res = await axios.get(`${baseUrl}stories/getstory`)
+     const res = await api.get(`${baseUrl}stories/getstory`)
       if(res.status === 200){
           console.log(res.data)
             setStory(res.data);
@@ -52,7 +53,7 @@ export function StoryProvider({children}){
       try{
         setLoading(true)
         setError(null)
-        const res = await axios.delete(`${baseUrl}stories/deletestory/${id}`)
+        const res = await api.delete(`${baseUrl}stories/deletestory/${id}`)
       }
       catch(err){
         setError(err)

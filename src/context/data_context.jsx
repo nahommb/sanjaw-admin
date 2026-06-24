@@ -2,27 +2,28 @@ import { createContext, useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { baseUrl } from "./helper/base_url";
+import api from "./helper/apiInstance";
 
 export const DataContext = createContext();
 
 export function DataProvider({ children }) {
   // You can add state and functions here to manage shared data
   const [loading, setLoading] = useState(false);
-  const [error , setError] = useState(null);
+  const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
 
-  const createPost = async(postData) => {
+  const createPost = async (postData) => {
     console.log(postData);
     try {
 
       setLoading(true);
       setError(null);
-     const res = await axios.post(`${baseUrl}posts/createpost`, postData, {
+      const res = await api.post(`${baseUrl}posts/createpost`, postData, {
         // headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      getPosts();
-      
+      getPosts(1);
+
     } catch (err) {
       setError("Failed to create post");
       console.log('eerrr')
@@ -32,75 +33,77 @@ export function DataProvider({ children }) {
     }
   }
 
-  const getPosts = async(page)=>{
-    try{
+  const getPosts = async (page = 1) => {
+    let limit = 6;
+    page = page.toString();
+    try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(`${baseUrl}posts/allposts?page=${page}&limt=6`, {
+      const res = await api.get(`${baseUrl}posts/allposts?page=${page}&limit=${limit}`, {
         withCredentials: true,
       });
-      if(res.status === 200){
+      if (res.status === 200) {
         setPosts(res.data);
+        console.log(res.data)
       }
     }
-    catch(err){
+    catch (err) {
       setError("Failed to fetch posts");
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }
 
-  const deletePost = async(postId)=>{
+  const deletePost = async (postId) => {
 
     console.log("Deleting post:", postId);
-    try{
+    try {
       setLoading(true);
       setError(null);
-      const res = await axios.delete(`${baseUrl}posts/deletepost/${postId}`, {
+      const res = await api.delete(`${baseUrl}posts/deletepost/${postId}`, {
         withCredentials: true,
       });
-      if(res.status === 200){
-        setPosts(posts.filter((post)=>post.id !== postId));
+      if (res.status === 200) {
+        setPosts(posts.filter((post) => post.id !== postId));
       }
     }
-    catch(err){
+    catch (err) {
       setError("Failed to delete post");
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }
 
-  const editPost = async(postId,updatedContent)=>{
-    try{
+  const editPost = async (postId, updatedContent) => {
+    try {
       setLoading(true);
       setError(null);
-      const res = await axios.patch(`${baseUrl}posts/editpost/${postId}`,
-        {content:updatedContent}, {
+      const res = await api.patch(`${baseUrl}posts/editpost/${postId}`,
+        { content: updatedContent }, {
         withCredentials: true,
       });
-      if(res.status === 200){
-        setPosts(posts.map((post)=>post.id === postId ? {...post, content: updatedContent} : post));
+      if (res.status === 200) {
+        setPosts(posts.map((post) => post.id === postId ? { ...post, content: updatedContent } : post));
       }
     }
-    catch(err){
+    catch (err) {
       setError("Failed to edit post");
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getPosts();
     console.log(posts)
-  },[]);
+  }, []);
 
   return (
-    <DataContext.Provider value={{createPost, getPosts,editPost,deletePost,posts,loading, error}}>
+    <DataContext.Provider value={{ createPost, getPosts, editPost, deletePost, posts, loading, error }}>
       {children}
     </DataContext.Provider>
   );
 }
-   

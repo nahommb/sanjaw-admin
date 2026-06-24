@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { baseUrl } from "./helper/base_url";
+import api from "./helper/apiInstance";
 
 export const MatchDayContext = createContext();
 
@@ -15,7 +16,7 @@ const getMatchDay = async(page)=>{
   try{
     setLoading(true)
     setError(null);
-    const res = await axios.get(`${baseUrl}posts/matchdays?page=${page}`)
+    const res = await api.get(`${baseUrl}posts/matchdays?page=${page}&limit=4`)
     
     // if(res.status === 200){
         setMatchDays(res.data)
@@ -35,7 +36,7 @@ const createMatchDay = async({home_team,away_team,match_date,event_type,venue})=
   try{
         setLoading(true)
         setError(null)
-     const res = await axios.post(`${baseUrl}posts/creatematchday`,{
+     const res = await api.post(`${baseUrl}posts/creatematchday`,{
         home_team,
         away_team,
         match_date,
@@ -61,7 +62,7 @@ const deleteMatchDay = async(id)=>{
   try{
         setLoading(true)
         setError(null)
-     const res = await axios.delete(`${baseUrl}posts/deletematchday/${id}`,
+     const res = await api.delete(`${baseUrl}posts/deletematchday/${id}`,
       {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
